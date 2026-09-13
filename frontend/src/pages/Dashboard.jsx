@@ -281,10 +281,11 @@ export default function Dashboard({onNavigate}) {
   const handleAction = action => {
     if (action.kind === 'blocked' && action.blocker) {
       if (action.blocker.kind === 'stage') {
-        onNavigate?.('control', {orderId: action.blocker.order_id});
+        onNavigate?.('control', {orderId: action.blocker.order_id, highlightBlocker: action.blocker.id});
       } else {
         onNavigate?.(action.blocker.stage_name_fa.includes('خرید') ? 'purchase' : 'production', {
           orderId: action.blocker.order_id,
+          highlightBlocker: action.blocker.id
         });
       }
       return;
@@ -295,6 +296,7 @@ export default function Dashboard({onNavigate}) {
       onNavigate?.(action.task.department === 'PURCHASE' ? 'purchase' : 'production', {
         orderId: action.task.order_id,
         productId: action.task.order_item_id || undefined,
+        highlightTask: action.task.id
       });
     }
   };
@@ -321,7 +323,12 @@ export default function Dashboard({onNavigate}) {
     URL.revokeObjectURL(link.href);
   };
 
-  if (!data && loading) return <div className="loading">در حال آماده‌سازی مرکز تصمیم…</div>;
+  if (!data && loading) return (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <div className="loading-text">در حال آماده‌سازی مرکز تصمیم…</div>
+    </div>
+  );
   if (!data)
     return (
       <div className="load-error">
@@ -349,6 +356,14 @@ export default function Dashboard({onNavigate}) {
           <button className={filterCount ? 'filter-button active' : 'filter-button'} onClick={() => setFiltersOpen(true)}>
             فیلترها{filterCount ? ` · ${filterCount}` : ''}
           </button>
+          {filterCount > 0 && (
+            <button className="secondary" onClick={() => {
+              setCustomerId('');
+              setDateFrom('');
+              setDateTo('');
+              setRisk('all');
+            }}>پاک کردن فیلترها</button>
+          )}
           <button className="secondary" onClick={load} disabled={loading}>
             {loading ? '…' : 'به‌روزرسانی'}
           </button>

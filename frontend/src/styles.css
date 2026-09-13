@@ -550,3 +550,77 @@ tr.task-blocked td{border-bottom-color:#f5dada}
 }
 
 
+
+/* Custom Loading Spinner */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  color: #79868f;
+  gap: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(46, 139, 119, 0.2);
+  border-left-color: #2e8b77;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Modals and Dropdown Transitions */
+.modal-back {
+  transition: opacity 0.3s ease;
+}
+
+.modal {
+  animation: modal-in 0.3s ease-out;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.decision-menu > div {
+  animation: dropdown-in 0.2s ease-out;
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Print layout improvements */
+@media print {
+  tr {
+    page-break-inside: avoid;
+  }
+  .report-detail-row {
+    page-break-inside: avoid;
+  }
+  .card, .section-title {
+    page-break-inside: avoid;
+  }
+}
